@@ -1,8 +1,43 @@
 ![](../../workflows/gds/badge.svg) ![](../../workflows/docs/badge.svg) ![](../../workflows/test/badge.svg) ![](../../workflows/fpga/badge.svg)
 
-# CDM MATRIX
+# Tiny Tapeout VGA Snake Game
 
-- [Read the documentation for project](docs/info.md)
+A hardware-rendered Snake game written in Verilog for Tiny Tapeout. It features real-time 640x480 @ 60Hz VGA output, a dynamic body growth engine, and support for both directional buttons and physical PS/2 keyboard arrow keys.
+
+- [Read the detailed documentation](docs/info.md)
+
+---
+
+## How it Works
+
+The project uses a beam-racing graphics pipeline to generate VGA video signals on-the-fly without an external SRAM framebuffer, fitting entirely within a single Tiny Tapeout 1x1 tile.
+
+* **Video Output:** Drives a 6-bit R2R DAC VGA PMOD generating a 640x480 @ 60Hz video stream.
+* **Snake Engine:** Manages head/body coordinates across a 20x15 cell grid, growing the snake's tail up to 16 segments when food is eaten.
+* **Control Input:** Supports direct directional button inputs (`ui_in[3:0]`) as well as PS/2 keyboard arrow key decoding via serial communication (`ui_in[5:4]`).
+
+---
+
+## Pinout Mapping
+
+| Pin | Type | Name | Function |
+|---|---|---|---|
+| `ui_in[0]` | Input | `UP` | Direction Button Up |
+| `ui_in[1]` | Input | `DOWN` | Direction Button Down |
+| `ui_in[2]` | Input | `LEFT` | Direction Button Left |
+| `ui_in[3]` | Input | `RIGHT` | Direction Button Right |
+| `ui_in[4]` | Input | `PS2_CLK` | PS/2 Keyboard Clock Signal |
+| `ui_in[5]` | Input | `PS2_DAT` | PS/2 Keyboard Data Signal |
+| `uo_out[0]`| Output| `R1` | Red Bit 1 (MSB) |
+| `uo_out[1]`| Output| `G1` | Green Bit 1 (MSB) |
+| `uo_out[2]`| Output| `B1` | Blue Bit 1 (MSB) |
+| `uo_out[3]`| Output| `VSYNC`| Vertical Sync Signal |
+| `uo_out[4]`| Output| `R0` | Red Bit 0 (LSB) |
+| `uo_out[5]`| Output| `G0` | Green Bit 0 (LSB) |
+| `uo_out[6]`| Output| `B0` | Blue Bit 0 (LSB) |
+| `uo_out[7]`| Output| `HSYNC`| Horizontal Sync Signal |
+
+---
 
 ## What is Tiny Tapeout?
 
@@ -10,33 +45,23 @@ Tiny Tapeout is an educational project that aims to make it easier and cheaper t
 
 To learn more and get started, visit https://tinytapeout.com.
 
-## Set up your Verilog project
+---
 
-1. Add your Verilog files to the `src` folder.
-2. Edit the [info.yaml](info.yaml) and update information about your project, paying special attention to the `source_files` and `top_module` properties. If you are upgrading an existing Tiny Tapeout project, check out our [online info.yaml migration tool](https://tinytapeout.github.io/tt-yaml-upgrade-tool/).
-3. Edit [docs/info.md](docs/info.md) and add a description of your project.
-4. Adapt the testbench to your design. See [test/README.md](test/README.md) for more information.
+## Project Setup
+
+1. Verilog files located in `src/`:
+   - `tt_um_vga_snake.v` (Top module & game engine)
+   - `ps2_arrows.v` (PS/2 keyboard decoder)
+2. Configured in [info.yaml](info.yaml) under `source_files` and `top_module`.
+3. Project documentation located in [docs/info.md](docs/info.md).
 
 The GitHub action will automatically build the ASIC files using [LibreLane](https://www.zerotoasiccourse.com/terminology/librelane/).
 
-## Enable GitHub actions to build the results page
-
-- [Enabling GitHub Pages](https://tinytapeout.com/faq/#my-github-action-is-failing-on-the-pages-part)
+---
 
 ## Resources
 
-- [FAQ](https://tinytapeout.com/faq/)
-- [Digital design lessons](https://tinytapeout.com/digital_design/)
-- [Learn how semiconductors work](https://tinytapeout.com/siliwiz/)
-- [Join the community](https://tinytapeout.com/discord)
-- [Build your design locally](https://www.tinytapeout.com/guides/local-hardening/)
-
-## What next?
-
-- [Submit your design to the next shuttle](https://app.tinytapeout.com/).
-- Edit [this README](README.md) and explain your design, how it works, and how to test it.
-- Share your project on your social network of choice:
-  - LinkedIn [#tinytapeout](https://www.linkedin.com/search/results/content/?keywords=%23tinytapeout) [@TinyTapeout](https://www.linkedin.com/company/100708654/)
-  - Mastodon [#tinytapeout](https://chaos.social/tags/tinytapeout) [@matthewvenn](https://chaos.social/@matthewvenn)
-  - X (formerly Twitter) [#tinytapeout](https://twitter.com/hashtag/tinytapeout) [@tinytapeout](https://twitter.com/tinytapeout)
-  - Bluesky [@tinytapeout.com](https://bsky.app/profile/tinytapeout.com)
+- [Tiny Tapeout FAQ](https://tinytapeout.com/faq/)
+- [Digital Design Lessons](https://tinytapeout.com/digital_design/)
+- [Join the Community Discord](https://tinytapeout.com/discord)
+- [Build Your Design Locally](https://www.tinytapeout.com/guides/local-hardening/)
