@@ -1,6 +1,6 @@
 ![](../../workflows/gds/badge.svg) ![](../../workflows/docs/badge.svg) ![](../../workflows/test/badge.svg) ![](../../workflows/fpga/badge.svg)
 
-# Tiny Tapeout VGA Snake Game
+# CDM PYTHON GAME using Tiny Tapeout VGA
 
 A hardware-rendered Snake game written in Verilog for Tiny Tapeout. It features real-time 640x480 @ 60Hz VGA output, a dynamic body growth engine, and support for both directional buttons and physical PS/2 keyboard arrow keys.
 
